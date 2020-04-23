@@ -12,11 +12,18 @@ transactionsRouter.get('/', async (request, response) => {
 });
 
 transactionsRouter.post('/', async (request, response) => {
-  const {title, value, type, category} = request.body;
+  const { title, value, type, category } = request.body;
 
+  const createTransaction = new CreateTransactionService();
 
+  const transaction = await createTransaction.execute({
+    title,
+    value,
+    type,
+    category: category.toLowerCase(),
+  });
 
-  return response.json({ok:true});
+  return response.status(201).json(transaction);
 });
 
 transactionsRouter.delete('/:id', async (request, response) => {
